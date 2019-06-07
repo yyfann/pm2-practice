@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{margin: 0;padding: 0;}
+		body{background: 		MidnightBlue	;}
+		#bg{width: 600px;height: 400px;
+			position: absolute;z-index: 20;}
+		.bg_inner{float: left;width: 100px;height: 100px;
+			border-bottom: 1px solid #000;border-right: 1px solid #000;box-sizing: border-box}
+
+		#center{width: 100px;height: 100px;
+			position: absolute;left: 150px;top: 150px;
+			border-radius: 20%;
+			background:slateblue ;}
+
+		#item{width: 100px;height: 25px;
+			position: absolute;left:50px;top:37.5px;
+			border-radius: 10%;
+			background:dimgray ;
+			/*margin-left:-30px;*/
+			transform: rotateZ(0deg);
+			transform-origin:0px 12.5px }
+
+		.bullet{
+			width: 20px;height: 20px;
+			border-radius: 50%;
+			background: tomato;
+			position: absolute;left: 0px;top: 0px;
+		}
+		
+		.target{
+			width: 50px;height: 50px;
+			display: block;
+			background: url("l1.png") no-repeat center/100% 100%;
+			position: absolute;left: 600px;top: 200px;
+			/*padding: 50px;*/
+		}
+		#CD{
+			height: 50px;
+			border-radius: 20%;
+			background: teal;color: white;
+			font-size: 35px;text-align: center;line-height: 50px;
+			position: absolute;top: 0px;left: 150px;
+		}
+		#weapon{
+			height: 50px;
+			border-radius: 30%;
+			background: steelblue;color: white;
+			font-size: 35px;text-align: center;line-height: 50px;
+			position: absolute;top: 0px;left: 500px;
+		}
+
+		#mark{
+			width: 100px;height: 100px;
+			background: tomato;
+			border-radius: 10%;
+			position: absolute;left: 0px;top: 0px;
+			text-align: center;line-height: 100px;
+			font: bold 50px "雅黑";color:white;
+		}
+
+		#tip{
+			position: absolute;
+			color: wheat;
+			left: 600px
+		}
+
+		
+	</style>
+</head>
+<body>
+	<!-- 网格尺 -->
+	<div id="bg">
+		<div class="bg_inner"></div>
+		<div class="bg_inner"></div>
+		<div class="bg_inner"></div>
+		<div class="bg_inner"></div>
+		<div class="bg_inner"></div>
+		<div class="bg_inner"></div>
+		<div class="bg_inner"></div>
+		<div class="bg_inner"></div>
+		<div class="bg_inner"></div>
+		<div class="bg_inner"></div>
+		<div class="bg_inner"></div>
+		<div class="bg_inner"></div>
+		<div class="bg_inner"></div>
+		<div class="bg_inner"></div>
+		<div class="bg_inner"></div>
+		<div class="bg_inner"></div>
+		<div class="bg_inner"></div>
+		<div class="bg_inner"></div>
+		<div class="bg_inner"></div>
+		<div class="bg_inner"></div>
+		<div class="bg_inner"></div>
+		<div class="bg_inner"></div>
+		<div class="bg_inner"></div>
+		<div class="bg_inner"></div>
+	</div>
+	<div id="center">
+		<div id="item"></div>
+	</div>
+	<div id="CD">0</div>
+	<aside id="mark">0</aside>
+	<aside id="weapon">单发</aside>
+	<aside id="tip">滚轮切换发射模式</aside>
+	<!-- <aside class="target"></aside> -->
+
+
+</body>
+</html>
+<!-- <script src="go.js"></script> -->
+<script>
+		// var opp=1;
+		// var near=1;
+		// var Deg=45;  //  设置角度
+		// var arcDeg=Deg*2*Math.PI/360;  // 角度转成弧度
+		// console.log(arcDeg)
+		// var res=Math.tan(arcDeg) // 求正切值
+		// console.log(res)
+		// console.log(Math.atan(1))
+		
+		 //  控制center的位置
+		 // 左 :a: 65
+		 // 右 :d : 68
+		 // 上 :w :87
+		 // 下 :s  :83;
+		 // 设置变量接center的坐标
+		 var centerX=center.offsetLeft;
+		 var centerY=center.offsetTop;
+		 // 键盘控制center的移动
+		 document.onkeydown=function(e){
+		 	e=e||window.event;
+		 	var code=e.keyCode;
+		 	switch(code){
+		 		case 65:
+		 		// console.log("左");
+		 		centerX=centerX-8;
+		 		center.style.left=centerX+"px"
+		 		break;
+		 		case 68:
+		 		// console.log("右");
+		 		centerX=centerX+8;
+		 		center.style.left=centerX+"px"
+		 		break;
+		 		case 87:
+		 		// console.log("上");
+		 		centerY=centerY-8;
+		 		center.style.top=centerY+"px"
+		 		break;
+		 		case 83:
+		 		// console.log("下");
+		 		centerY=centerY+8;
+		 		center.style.top=centerY+"px"
+		 		break;
+		 	}
+		 }
+		 //  设置CD的数值
+		  var CDcount="大招好了!";
+		  CD.innerHTML=CDcount;
+		  var able=1;
+		 //  让arcDeg,deg是全局变量,bullet可以共享
+		 	var arcDeg;
+		 	var deg;  
+		 //   控制炮口的方向			
+		 document.onmousemove=function(e){
+		 	e=e||window.event;
+		 	//  获得center中心的位置
+		 	var centerCoreX=center.offsetLeft+center.offsetWidth/2;
+		 	var centerCoreY=center.offsetTop+center.offsetHeight/2;
+		 	//  计算鼠标的点击位置
+		 	var Mx=e.clientX;
+		 	var My=e.clientY;
+		 	// 计算鼠标的位置 和centerCore的 x,y距离
+		 	var M_centerCoreX=Mx-centerCoreX
+		 	var M_centerCoreY=My-centerCoreY
+		 	// console.log(M_centerCoreX,M_centerCoreY)
+		 	// 计算鼠标和core 相对于中心水平线的正切值
+		 	// var tanM_Core=M_centerCoreY/M_centerCoreX //  y方向/x方向 !!
+		 	// console.log(tanM_Core)
+		 	//  计算对应的弧度值,考虑到atan的范围
+		 	//  if( M_centerCoreX>=0){
+			 // 	var arcDeg=Math.atan(tanM_Core)
+			 // 	//  计算相应的角度值
+			 // 	var deg=arcDeg*360/2/Math.PI;
+			 // 	// console.log(deg) 
+				// item.style.cssText="transform: rotateZ("+deg+"deg);"
+		 	//  }else{
+		 	//  	var arcDeg=Math.atan(tanM_Core)
+			 // 	//  计算相应的角度值
+			 // 	var deg=arcDeg*360/2/Math.PI;
+			 // 	var degN=180+deg
+			 // 	// console.log(degN) 
+				// item.style.cssText="transform: rotateZ("+degN+"deg);"
+		 	//  }
+		 	 arcDeg=Math.atan2(M_centerCoreY,M_centerCoreX)
+		 	//  计算相应的角度值
+		 	 deg=arcDeg*360/2/Math.PI;
+		 	// console.log(deg) 
+			item.style.cssText="transform: rotateZ("+deg+"deg);"
+		 }
+
+		 //  出现时间随机
+		var counter = 1000;
+		var timer = setTimeout(fn, counter);
+
+		function fn(){
+			counter=Math.random()*5000;
+		    createTarget();
+		    timer = setTimeout(fn, counter);
+		}
+		 //制造一个target
+		 var targets=[];
+		 // setInterval(createTarget,3000)
+
+		 function createTarget(){
+			 targets.push(document.createElement("div"))
+			 targets[targets.length-1].className="target";
+			 targets[targets.length-1].style.left=(targets.length-1)*100+"px"
+			 document.body.appendChild(targets[targets.length-1])
+			 console.log(targets[targets.length-1])
+			 gotarget(targets[targets.length-1],5,3,0)//  让target动起来
+		 }
+		 
+
+		 //  flag来保存滚轮的动作
+		  var wheelFlag=1;
+		  //  通过滚轮来控制发射几枚bullet
+		 document.onmousewheel=function(e){
+		 	e=e||window.event;
+		 	if(e.wheelDelta>0){wheelFlag=1;weapon.innerHTML="单发"}
+			if(e.wheelDelta<0){wheelFlag=-1;weapon.innerHTML="三连发"}
+		 	console.log(wheelFlag)
+		 }
+		 //  产生并发射炮弹
+		 document.onclick=fire;
+		 	
+		 function fire(){
+		 	if(wheelFlag==1){
+			    var bullet=document.createElement("div")
+			  	bullet.className="bullet"
+			  	// 如果是在item加的话是相对于 item的 重力加速度g 方向可变
+			  	// item.appendChild(bullet)  
+			  	// go(bullet,10,0,0.3)
+			  	//  所以要在body中加
+			  	document.body.appendChild(bullet)  
+			  	bullet.style.left=center.offsetLeft+center.offsetWidth/2-bullet.offsetWidth/2+"px"
+			  	bullet.style.top=center.offsetTop+center.offsetHeight/2-bullet.offsetHeight/2+"px"
+			  	//  已知斜边初速度 , 根据鼠标的角度,计算x速度 和 y的速度
+			  	var vdirect=10;
+			  	var vx=vdirect*Math.cos(arcDeg);
+			  	var vy=vdirect*Math.sin(arcDeg);
+
+			  	gobullet(bullet,vx,vy,0.1)  //  所有判断位置要直接加在go中,因为是延时执行
+			  	// console.log(bullet.offsetLeft)
+		 	}else if(wheelFlag==-1&&able==1){
+		 		console.log("三发")
+		 		//  开始CD计时
+		 		 CDcount="终极技能正在充能";
+		 		 CD.innerHTML=CDcount;
+			 	 CD.style.background="	LightGrey"
+		 		 able=0;
+
+		 		 setTimeout(function(){
+		 		 	CDcount="大招好了";
+			 		CD.innerHTML=CDcount;
+			 		CD.style.background="teal"
+			 		able=1;
+		 		 },6000)
+
+		 		var bullet1=document.createElement("div")
+		 		var bullet2=document.createElement("div")
+		 		var bullet3=document.createElement("div")
+			  	bullet1.className="bullet"
+			  	bullet2.className="bullet"
+			  	bullet3.className="bullet"
+			  	// 如果是在item加的话是相对于 item的 重力加速度g 方向可变
+			  	// item.appendChild(bullet)  
+			  	// go(bullet,10,0,0.3)
+			  	//  所以要在body中加
+			  	document.body.appendChild(bullet1)  
+			  	document.body.appendChild(bullet2)  
+			  	document.body.appendChild(bullet3)  
+
+			  	bullet1.style.left=center.offsetLeft+center.offsetWidth/2-bullet1.offsetWidth/2+"px"
+			  	bullet1.style.top=center.offsetTop+center.offsetHeight/2-bullet1.offsetHeight/2+"px"
+			  	bullet2.style.left=center.offsetLeft+center.offsetWidth/2-bullet1.offsetWidth/2+"px"
+			  	bullet2.style.top=center.offsetTop+center.offsetHeight/2-bullet1.offsetHeight/2+"px"
+			  	bullet3.style.left=center.offsetLeft+center.offsetWidth/2-bullet1.offsetWidth/2+"px"
+			  	bullet3.style.top=center.offsetTop+center.offsetHeight/2-bullet1.offsetHeight/2+"px"
+
+
+
+			  	//  已知斜边初速度 , 根据鼠标的角度,计算x速度 和 y的速度
+			  	var v1direct=10;
+			  	var vx1=v1direct*Math.cos(arcDeg);
+			  	var vy1=v1direct*Math.sin(arcDeg);
+
+			  	var v2direct=10;
+			  	var vx2=v2direct*Math.cos(arcDeg);
+			  	var vy2=v2direct*Math.sin(arcDeg)+2;
+
+			  	var v3direct=10;
+			  	var vx3=v3direct*Math.cos(arcDeg);
+			  	var vy3=v3direct*Math.sin(arcDeg)-2;
+
+
+			  	gobullet(bullet1,vx1,vy1,0.1)  
+			  	gobullet(bullet2,vx2,vy2,0.1)  
+			  	gobullet(bullet3,vx3,vy3,0.1)  
+			  	//  所有判断位置要直接加在go中,因为是延时执行
+			  	// console.log(bullet.offsetLeft)
+		 	}
+		 }
+
+	 //  使用自由落体 go函数
+	function gobullet(elem,vx,vy,g){
+	    //  让half1下落
+		// 记录half1的初始位置
+		var iX=elem.offsetLeft;
+		var iY=elem.offsetTop;
+		// console.log(iX,iY)
+		//设置初速度 , 重力加速度
+		var ivX=vx;
+		var ivY=vy;
+		var G=g;
+		var timer=setInterval(function(){
+			iX+=ivX;
+			ivY+=G
+			iY+=ivY;
+			//设置边界
+			var iXmin=0;
+			var iYmin=0;
+			var iXmax=document.documentElement.clientWidth-elem.offsetWidth;
+			var iYmax=document.documentElement.clientHeight-elem.offsetHeight;
+			//  判断边界,回弹
+			if(iX<=iXmin){iX=iXmin;ivX=-ivX}
+			if(iX>=iXmax){iX=iXmax;ivX=-ivX}
+			if(iY<=iYmin){iY=iYmin;ivY=-ivY}
+			if(iY>=iYmax){iY=iYmax;ivY=-ivY;
+				clearInterval(timer);
+				document.body.removeChild(elem)}
+			// 判断是否集中目标 , 需要判断每个目标
+			// if(target.offsetLeft>0){
+			    var x = parseInt(getStyle(elem, "left"));
+				var y = parseInt(getStyle(elem, "top"));
+				var w = parseInt(getStyle(elem, "width"));
+				var h = parseInt(getStyle(elem, "height"));
+
+				for(var i=0;i<=targets.length-1;i++){
+					var _x = parseInt(getStyle(targets[i], "left"));
+					var _y = parseInt(getStyle(targets[i], "top"));
+					var _w = parseInt(getStyle(targets[i], "width"));
+					var _h = parseInt(getStyle(targets[i], "height"));
+					
+					var a = x+w > _x;
+					var b = x < _x+_w;
+					var c = y+h > _y;
+					var d = y < _y+_h;
+					
+					if( a && b && c && d ){
+						targets[i].style.background = "red";
+						document.body.removeChild(targets[i])
+						clearInterval(timer);
+						document.body.removeChild(elem)
+						mark.innerHTML++;
+					}else{
+						// target.style.background = "blue";
+					}
+				}
+			// }
+			// 取位置的函数
+			function getStyle(elem, attr){
+				if( window.getComputedStyle ){
+					return getComputedStyle(elem, null)[attr];
+				}else{
+					return elem.currentStyle(attr);
+				}
+			}	
+			//  坐标赋值
+			elem.style.left=iX+"px"
+			elem.style.top=iY+"px"
+		},10)
+	}
+
+
+	 //  gotarget函数
+	function gotarget(elem,vx,vy,g){
+	    //  让half1下落
+		// 记录half1的初始位置
+		var iX=elem.offsetLeft;
+		var iY=elem.offsetTop;
+		// console.log(iX,iY)
+		//设置初速度 , 重力加速度
+		var ivX=vx;
+		var ivY=vy;
+		var G=g;
+		var timer=setInterval(function(){
+			iX+=ivX;
+			ivY+=G
+			iY+=ivY;
+
+			//设置边界
+			var iXmin=0;
+			var iYmin=0;
+			var iXmax=document.documentElement.clientWidth-elem.offsetWidth;
+			var iYmax=document.documentElement.clientHeight-elem.offsetHeight;
+
+			//  判断边界,回弹
+			
+			if(iX<=iXmin){iX=iXmin;ivX=-ivX}
+			if(iX>=iXmax){iX=iXmax;ivX=-ivX}
+			if(iY<=iYmin){iY=iYmin;ivY=-ivY}
+			if(iY>=iYmax){iY=iYmax;ivY=-ivY}
+
+			// 判断是否集中目标
+			// if(target.offsetLeft>0){
+
+			//     var x = parseInt(getStyle(elem, "left"));
+			// 	var y = parseInt(getStyle(elem, "top"));
+			// 	var w = parseInt(getStyle(elem, "width"));
+			// 	var h = parseInt(getStyle(elem, "height"));
+
+			// 	var _x = parseInt(getStyle(target, "left"));
+			// 	var _y = parseInt(getStyle(target, "top"));
+			// 	var _w = parseInt(getStyle(target, "width"));
+			// 	var _h = parseInt(getStyle(target, "height"));
+				
+			// 	var a = x+w > _x;
+			// 	var b = x < _x+_w;
+			// 	var c = y+h > _y;
+			// 	var d = y < _y+_h;
+				
+			// 	if( a && b && c && d ){
+			// 		target.style.background = "red";
+			// 	}else{
+			// 		// target.style.background = "blue";
+			// 	}
+			// }
+			// // 取位置的函数
+			// function getStyle(elem, attr){
+			// 	if( window.getComputedStyle ){
+			// 		return getComputedStyle(elem, null)[attr];
+			// 	}else{
+			// 		return elem.currentStyle(attr);
+			// 	}
+			// }	
+			//  坐标赋值
+			elem.style.left=iX+"px"
+			elem.style.top=iY+"px"
+		},10)
+	}
+
+		 
+
+		
+
+		  
+	
+
+</script>
