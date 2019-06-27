@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/yyfann/aliyun-vue-node/issues"
   },
-  "homepage": "https://github.com/yyfann/aliyun-vue-node#readme"
+  "homepage": "https://github.com/yyfann/aliyun-vue-node#readme",
+  "devDependencies": {
+    "qiniu": "^7.2.2"
+  }
 }

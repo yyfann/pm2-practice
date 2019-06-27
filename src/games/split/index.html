@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+	<style>
+	*{margin: 0;padding: 0;}
+		body{height: 2000px;width: 2000px;cursor:url('smallLight.png'),pointer;background: black;}
+		#div1{display: inline-block;/*;height: 100px*/;background: slateblue;position: absolute;left: 50px;top: 50px;border: 1px solid #000;  }
+
+		td{width: 50px;height: 50px;border: 1px solid #000;}
+
+		/*.div1{width: 20px;height: 20px;background: teal;}*/
+
+		img{width: 100%;}
+		p{font-size: 12px;}
+		
+		div{
+			position:absolute;
+			width:15px;
+			height:15px;
+			border-radius:5px;
+			background:azure;
+		}
+
+		.fruit{position:absolute;
+			left: 300px;bottom: 10px;
+			width:70px;
+			height:70px;
+			border-radius:30px;
+			background:radial-gradient(circle at 40px 60px, #5cabff, #000);
+			color:white;
+			font-size: 20px;
+		}
+		.supHalf{
+				position:absolute;
+			left: 290px;top: 190px;
+			width:35px;
+			height:35px;
+			border-radius:30px;
+			background:radial-gradient(circle at 30px 50px, azure, #000);
+			color:white;
+			font-size: 20px;
+		}
+		.subHalf{
+			position:absolute;
+			left: 340px;top: 240px;
+			width:35px;
+			height:35px;
+			border-radius:30px;
+			background:radial-gradient(circle at 30px 50px, mintcream, #000);
+			color:white;
+			font-size: 20px;
+		}
+		#banner2{
+			width: 800px;height: 250px;
+			background: rgba(0,0,0,255,0.4);
+			color:white;
+			position: absolute;left: 100px;top: 100px;
+			z-index: 30;
+			font-size: 80px;
+			font-weight: bold;
+			line-height: 300px;text-align:center;
+			display: none;
+		}
+		#banner3{
+			width: 1000px;height: 200px;
+			background: rgba(255,0,0,0.4);
+			color:white;
+			position: absolute;left: 100px;top: 100px;
+			z-index: 30;
+			font-size: 80px;
+			font-weight: bold;
+			line-height: 300px;text-align:center;
+			display: none;
+		}
+
+		#mark{
+			width: 100px;height: 100px;
+			background: tomato;
+			position: absolute;left: 100px;top: 100px;
+			text-align: center;line-height: 100px;
+			font: bold 50px "雅黑";color:white;
+		}
+
+
+	</style>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+
+<!-- <div id="div1" style="color:white"><img id="img1" src="img.jpg" alt=""><p>123</p></div> -->
+
+<div></div><div></div><div></div>
+<div></div><div></div><div></div><div></div>
+<div></div><div></div><div></div>
+<div></div><div></div><div></div><div></div><div></div><div></div>
+
+<!-- <h1 id="fruit">水果</h1> -->
+<header id="banner2">&nbsp;DOUBLE KILL&nbsp;</header>
+<header id="banner3">!!!!!!!!&nbsp;TRIPLE KILL&nbsp;!!!!!!</header>
+<aside id="mark">0</aside>
+</body>
+</html>
+<script>  
+	var count=0;
+	// 创建判定双杀的数组
+	var dbkill=[];
+	// 是否进入判定程序
+	var flag=0;
+
+	//  鼠标光标的效果
+	// 获取光标跟随元素
+	var divs = document.getElementsByTagName("div");
+	var l = divs.length;
+	// 设置颜色
+	for(var i=0;i<=l-1;i++){
+		divs[i].style.background="rgba(255,255,255,"+(i*0.05)+")";
+	}
+	document.onmousemove = function(e){
+		e = e || window.event;
+		divs[l-1].style.left = e.clientX+"px";
+		divs[l-1].style.top = e.clientY+"px";
+		for( var i=0; i<l-1; i++ ){
+			divs[i].style.left = divs[i+1].style.left;
+			divs[i].style.top = divs[i+1].style.top;
+		}
+	}
+
+	
+	//点击鼠标创造fruit
+	// document.onmousedown=create_and_split;
+
+	//定时器创造fruit,并且随机时间
+	var counter = 1000;
+	var timer = setTimeout(fn, counter);
+
+	function fn(){
+		counter=Math.random()*2000;
+	    create_and_split();
+	    timer = setTimeout(fn, counter);
+	}
+
+
+	function create_and_split(){
+		//  创建一个fruit
+		var fruit=document.createElement("h1")
+		fruit.className="fruit";
+		// 产生一个随机位置
+		var Cw=document.documentElement.clientWidth
+		var random=Math.random()
+		var leftRandom=Cw*random;
+		fruit.style.left=leftRandom+"px"
+		document.body.appendChild(fruit)
+	
+		//  设置边界
+		var H=document.documentElement.clientHeight-40  
+		// 上抛一个div , 产生一个随机速度 x,y, 优化方向
+		//  fruit起始位置超过屏幕一半,则反向
+		var vxRandom=random>0.5?-2:2; 
+		var vyRandom=Math.random()>0.5?2:2;
+		go(fruit,vxRandom,-vyRandom,0.01);
+	
+		// 滑过切割
+		
+		fruit.onmouseover=function(e){
+			e=e||window.event
+			var H=document.documentElement.clientHeight-40
+			// this.style.display="none";
+			document.body.removeChild(fruit)
+			var half1=document.createElement("h2")
+			half1.className="supHalf";
+			half1.style.left=e.clientX+"px"
+			half1.style.top=e.clientY+"px"
+			var half2=document.createElement("h2")
+			half2.className="subHalf";
+			half2.style.left=e.clientX+"px"
+			half2.style.top=e.clientY+"px"
+			document.body.appendChild(half1);
+			document.body.appendChild(half2);
+			go(half1,-2,-3,0.2);
+			go(half2,2,1,0.2);
+			
+			// 加分
+			mark.innerHTML++;
+			count+=1;
+			console.log(count)
+			// 旧版判定储存时间
+			var dTime=new Date().getTime()
+			dbkill.push(dTime);
+			console.log(dbkill)
+			// 进入判定
+			if(dbkill.length>=2){
+				if(dbkill[dbkill.length-1]-dbkill[dbkill.length-2]<=900){
+					console.log("start")
+					//  判定
+					if(count==2){
+						setTimeout(function(){
+							if(count>=3){
+								console.log("三杀")
+								banner3.style.display="block"
+								setTimeout(function(){
+									banner3.style.display="none"
+								},800)
+								dbkill=[]
+								count=0;
+							}else{
+								console.log("双杀")
+								banner2.style.display="block"
+								setTimeout(function(){
+									banner2.style.display="none"
+								},800)
+								dbkill=[]
+								count=0;
+							}
+						},800)
+					}
+				}else{
+					console.log("no")
+					dbkill=[]
+					count=0;
+				}
+			}
+			
+		}
+		
+
+		// 运动函数 go
+		function go(elem,vx,vy,g){
+		//  让half1下落
+			// 记录half1的初始位置
+			var iX=elem.offsetLeft;
+			var iY=elem.offsetTop;
+			// console.log(iX,iY)
+			//设置初速度 , 重力加速度
+			var ivX=vx;
+			var ivY=vy;
+			var G=g;
+			var timer=setInterval(function(){
+				iX+=ivX;
+				ivY+=G
+				iY+=ivY;
+				//  判断边界
+				// if(iX>=){iX==}
+				// if(iY>=H){document.body.removeChild(elem)}
+				if(iY>=H){elem.style.display="none"}
+				// if(iY>=H){clearInterval(timer)}
+				elem.style.left=iX+"px"
+				elem.style.top=iY+"px"
+			},10)
+		}
+	}
+</script>

@@ -34,7 +34,7 @@
 		.target{
 			width: 50px;height: 50px;
 			display: block;
-			background: url("l1.png") no-repeat center/100% 100%;
+			background: url("face.png") no-repeat center/100% 100%;
 			position: absolute;left: 600px;top: 200px;
 			/*padding: 50px;*/
 		}
@@ -60,12 +60,6 @@
 			position: absolute;left: 0px;top: 0px;
 			text-align: center;line-height: 100px;
 			font: bold 50px "雅黑";color:white;
-		}
-
-		#tip{
-			position: absolute;
-			color: wheat;
-			left: 600px
 		}
 
 		
@@ -105,7 +99,6 @@
 	<div id="CD">0</div>
 	<aside id="mark">0</aside>
 	<aside id="weapon">单发</aside>
-	<aside id="tip">滚轮切换发射模式</aside>
 	<!-- <aside class="target"></aside> -->
 
 
@@ -216,11 +209,12 @@
 		 // setInterval(createTarget,3000)
 
 		 function createTarget(){
+			 if (targets.length > 20) return 
+
 			 targets.push(document.createElement("div"))
 			 targets[targets.length-1].className="target";
 			 targets[targets.length-1].style.left=(targets.length-1)*100+"px"
 			 document.body.appendChild(targets[targets.length-1])
-			 console.log(targets[targets.length-1])
 			 gotarget(targets[targets.length-1],5,3,0)//  让target动起来
 		 }
 		 
