@@ -4,6 +4,8 @@
   "description": "部署在阿里云的服务",
   "main": "ecosystem.config.js",
   "scripts": {
+    "deploy-setup": "pm2 deploy ecosystem.config.js production setup",
+    "deploy": "pm2 deploy ecosystem.config.js production",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
