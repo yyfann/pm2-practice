@@ -22,7 +22,7 @@ module.exports = {
       repo: 'git@github.com:yyfann/pm2-practice.git', // github仓库地址
       ref  : 'origin/master', // github仓库分支
       host: '39.96.181.105',  // 服务器ip
-      path : '/root/www/production', // 存放在服务器的项目目录
+      path : '/root/pm2-test', // 存放在服务器的项目目录
       // 部署项目之后执行的操作
       'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production',
     }
