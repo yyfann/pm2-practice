@@ -1,7 +1,7 @@
 module.exports = {
   apps : [{
     // 项目名称
-    name: 'vue-node',
+    name: 'pm2-practice',
     // 项目入口文件
     script: 'src/index.js',
     // 项目需要的环境变量
@@ -19,7 +19,7 @@ module.exports = {
   deploy : {
     production : {
       user: 'root', // 服务器用户名
-      repo: 'git@github.com:yyfann/aliyun-vue-node.git', // github仓库地址
+      repo: 'git@github.com:yyfann/pm2-practice.git', // github仓库地址
       ref  : 'origin/master', // github仓库分支
       host: '39.96.181.105',  // 服务器ip
       path : '/root/www/production', // 存放在服务器的项目目录

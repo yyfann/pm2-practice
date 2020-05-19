@@ -1,5 +1,5 @@
 {
-  "name": "aliyun-vue-node",
+  "name": "pm2-practice",
   "version": "1.0.0",
   "description": "部署在阿里云的服务",
   "main": "ecosystem.config.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yyfann/aliyun-vue-node.git"
+    "url": "git+https://github.com/yyfann/pm2-practice.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/yyfann/aliyun-vue-node/issues"
+    "url": "https://github.com/yyfann/pm2-practice/issues"
   },
-  "homepage": "https://github.com/yyfann/aliyun-vue-node#readme",
+  "homepage": "https://github.com/yyfann/pm2-practice#readme",
   "devDependencies": {
     "qiniu": "^7.2.2"
   }
